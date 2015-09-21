@@ -1,0 +1,51 @@
+
+
+.index {
+    text-align: center;
+}
+
+.index div {
+    vertical-align: middle;
+    text-align: center;
+    overflow:hidden;
+}
+
+.index img {
+    max-height: 200px;
+}
+
+.index p {
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+
+.left-menu img {
+    float: left;
+    display: inline-block;
+}
+
+
+
+.map-frame{
+    position: absolute;
+    padding: 16px;
+    margin-bottom: 400px;
+    display: block;
+    width: 100%;
+    height: 400px;
+}
+
+#map {
+    width: 100%;
+    height: 400px;
+}
+
+form .ng-valid {
+    border-color: green;
+}
+
+form .ng-dirty {
+    border-color: red;
+}
+

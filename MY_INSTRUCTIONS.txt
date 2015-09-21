@@ -1,0 +1,31 @@
+
+set PATH=%PATH%;C:\Python27\;C:\Python27\Scripts;C:\Python27\Tools
+set PATH=%PATH%;"C:\Users\Dave\Google Drive\Projects\Python\routebuilder"
+set PYTHONPATH=C:\Python27;C:\Python27\Lib;C:\Python27\DLLs
+
+cd "C:\Users\Dave\Google Drive\Projects\Python\routebuilder"
+venv\Scripts\Activate
+python app.py
+
+
+heroku login
+heroku local    # http://localhost:5000
+
+
+# Heroku
+git push heroku master
+heroku ps:scale web=1
+heroku open # https://myaudiotour.herokuapp.com
+heroku logs -n 100
+heroku logs --tail
+
+https://audioguide.herokuapp.com/routebuilder/
+
+# Heroku commands
+heroku restart --app audioguide
+heroku stop --app audioguide all
+heroku run --app audioguide python ....
+
+
+# Git permissions!
+git update-index --chmod=+x app.py

@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-sm-3 col-md-2 sidebar">
+
+      <ul class="list nav nav-sidebar">
+      <li ng-click="route.selected_item=null"
+           ng-class="{'active': route.selected_item == null}"
+           class="route">
+        <a>
+          {[{route.details().title}]}<br/>
+          <img ng-src="{[{ route.details().image }]}" alt="" width='80%'>
+        </a>
+      </li>
+      </ul>
+
+      <ul ng-model="route.details().waypoints" ui-sortable="sortableOptions" class="list nav nav-sidebar">
+        <li ng-repeat="waypoint in route.details().waypoints"
+            waypoint_id="{[{ waypoint.id }]}"
+            ng-click="route.selected_item=waypoint"
+            ng-class="{'active': route.selected_item == waypoint}"
+            class="waypoint">
+          <a>
+            {[{ waypoint.title }]} <br/>
+            <img ng-src="{[{ waypoint.image }]}"  alt="" width='50%'>
+          </a>
+        </li>
+      </ul>
+
+      <div ng-click="route.add_waypoint(waypoint)" class="control">
+        <a>Add waypoint
+          <img src="https://cdn3.iconfinder.com/data/icons/glypho-travel/64/map-pin-marker-plus-256.png" class="img-responsive" alt="" width='30%'>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>

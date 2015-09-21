@@ -1,0 +1,103 @@
+<h1 class="page-header">{[{ route.details().title }]} &gt; {[{ route.selected_item.title }]}</h1  >
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-lg-4">
+
+    <form class="form-horizontal" ng-submit="route_waypoint.submit()" name="waypointForm">
+
+      <div class="form-group title_field">
+          <label for="id_waypoint_title" class="control-label col-xs-2">title:</label>
+          <div class="col-xs-10">
+            <input class="form-control"
+                   type="text"
+                   ng-model="route.selected_item.title"
+                   id="id_waypoint_title"
+                   ng-maxlength="40"
+                   name="title"
+                   required
+            />
+            <span ng-show="routeForm.title.$error.required">This is a required field</span>
+            <span ng-show="routeForm.title.$error.maxlength">Maximum length is 40</span>
+            <span ng-show="routeForm.title.$invalid">This field is invalid</span>
+          </div>
+      </div>
+
+      <div class="form-group description_field">
+          <label for="id_waypoint_description" class="control-label col-xs-2"> description:</label>
+          <div class="col-xs-10">
+            <textarea class="form-control"
+                      ng-model="route.selected_item.description"
+                      id="id_waypoint_description"
+                      name="description"
+                      cols="40"
+                      rows="8"
+                      ng-maxlength="500"
+                      required
+            ></textarea>
+            <span ng-show="routeForm.description.$error.required">This is a required field</span>
+            <span ng-show="routeForm.description.$error.maxlength">Maximum length is 500</span>
+            <span ng-show="routeForm.description.$invalid">This field is invalid</span>
+            <a class="btn btn-primary" onclick='responsiveVoice.speak("Am I supposed to read out the waypoint description?");' role="button">Listen &raquo;</a>
+          </div>
+      </div>
+
+      <div class="form-group lat_field">
+          <label for="id_waypoint_lat" class="control-label col-xs-2">latitude:</label>
+          <div class="col-xs-10">
+            <input class="form-control"
+                   ng-model="route.selected_item.lat"
+                   id="id_waypoint_lat"
+                   name="lat"
+                   type="number"
+                   required
+            />
+            <span ng-show="routeForm.lat.$error.required">This is a required field</span>
+            <span ng-show="routeForm.lat.$invalid">Invalid</span>
+          </div>
+      </div>
+
+      <div class="form-group lng_field">
+          <label for="id_waypoint_lng" class="control-label col-xs-2">longitude:</label>
+          <div class="col-xs-10">
+            <input class="form-control"
+                   ng-model="route.selected_item.lng"
+                   id="id_waypoint_lng"
+                   name="lng"
+                   type="number"
+                   required
+            />
+            <span ng-show="routeForm.lng.$error.required">This is a required field</span>
+            <span ng-show="routeForm.lng.$invalid">Invalid</span>
+          </div>
+      </div>
+
+      <div class="form-group image_field">
+          <label for="id_image" class="control-label col-xs-2"> image:</label>
+          <div class="col-xs-10">
+            <input class="form-control"
+                   ng-model="route.selected_item.image"
+                   id="id_image"
+                   maxlength="160"
+                   name="image"
+                   type="url"
+                   required
+            />
+            <span ng-show="routeForm.image.$error.required">This is a required field</span>
+            <span ng-show="routeForm.image.$error.maxlength">Maximum length is 160</span>
+            <span ng-show="routeForm.image.$invalid">Must be a URL</span>
+          </div>
+      </div>
+
+      <p><input class="btn btn-primary"
+                type="submit"
+                value="Save"
+                class="in_place_save_button"
+                ng-disabled="routeForm.$invalid"
+                ng-click="route.save_route()"
+          /></p>
+    </form>
+  </div>
+
+  <div class="col-xs-12 col-md-6 col-lg-4">
+    <img ng-src="{[{ route.selected_item.image }]}" class="img-responsive" alt="Waypoint Image">
+  </div>
+</div>

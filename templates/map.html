@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-xs-12 col-md-12 col-lg-8">
+    <div class="map-frame">
+
+      <map zoom="6"
+           ng-model="route.details().waypoints"
+           center="51.5, -0.14"
+           on-click="on_click()">
+
+        <marker
+          class="ng-map-marker"
+          ng-repeat="waypoint in route.details().waypoints"
+          position="{[{waypoint.lat}]}, {[{waypoint.lng}]}"
+          on-click="click_marker()"
+          draggable="true"
+          on-dragend="on_dragend(event,waypoint)"
+          title="{[{waypoint.title}]}">
+          <div class="marker" ng-class="{dragging: $dragging}"></div>
+        </marker>
+      </map>
+    </div>
+  </div>
+</div>
