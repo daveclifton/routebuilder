@@ -66,8 +66,13 @@ routebuilderApp.controller('RouteController', [
     // Google Maps controller.
     //
 
+    var render_manager = {};    // managers all rendered directions
+
     $scope.$on('mapInitialized', function(evt, evtMap) {
         self.map = evtMap;
+        for ( i in render_manager ) {
+            render_manager[i].setMap(self.map);
+        }
     });
 
     $scope.on_dragend = function(event,waypoint) {
@@ -100,19 +105,18 @@ routebuilderApp.controller('RouteController', [
     // Google Maps rendered lines / directions
     //
 
-    var render_manager = [];
-
     draw_directions_for_waypoint = function(waypoint) {
         waypoints = self.details().waypoints;
         i = waypoints.indexOf(waypoint);
-        DirectionsService.get_directions( waypoints[i-1], waypoint, render_directions );
-        DirectionsService.get_directions( waypoint, waypoints[i+1], render_directions );
+        DirectionsService.get_directions( waypoints[i-1], waypoint, self.render_directions );
+        DirectionsService.get_directions( waypoint, waypoints[i+1], self.render_directions );
     }
 
     draw_all_directions = function() {
+        console.log( "draw_all_directions");
         waypoints = self.details().waypoints;
         for ( i in waypoints ) {
-            DirectionsService.get_directions(waypoints[i], waypoints[parseInt(i)+1], render_directions);
+            DirectionsService.get_directions(waypoints[i], waypoints[parseInt(i)+1], self.render_directions);
         }
     }
 
@@ -126,12 +130,15 @@ routebuilderApp.controller('RouteController', [
         },
     };
 
-    render_directions = function(directions, origin, destination) {
+    self.render_directions = function(directions, origin, destination) {
+        console.log( "render_directions");
+
         var line = new google.maps.DirectionsRenderer({
             map: self.map,
             directions: directions,
             polylineOptions: { strokeColor: '#FF0000' }
         });
+        console.log( line);
 
         render_manager["ORIGIN:"+origin.$$hashKey] && render_manager["ORIGIN:"+origin.$$hashKey].setMap(null);
         render_manager["ORIGIN:"+origin.$$hashKey] = line;
