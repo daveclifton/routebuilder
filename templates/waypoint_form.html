@@ -36,13 +36,13 @@
             <span ng-show="routeForm.description.$error.required">This is a required field</span>
             <span ng-show="routeForm.description.$error.maxlength">Maximum length is 500</span>
             <span ng-show="routeForm.description.$invalid">This field is invalid</span>
-            <a class="btn btn-primary" onclick='responsiveVoice.speak("Am I supposed to read out the waypoint description?");' role="button">Listen &raquo;</a>
+            <a class="btn btn-primary" onclick='responsiveVoice.speak("This where I read out the description");' role="button">Listen &raquo;</a>
           </div>
       </div>
 
       <div class="form-group lat_field">
-          <label for="id_waypoint_lat" class="control-label col-xs-2">latitude:</label>
-          <div class="col-xs-10">
+          <label for="id_waypoint_lat" class="control-label col-xs-2">lat/long:</label>
+          <div class="col-xs-5">
             <input class="form-control"
                    ng-model="route.selected_item.lat"
                    id="id_waypoint_lat"
@@ -50,14 +50,11 @@
                    type="number"
                    required
             />
-            <span ng-show="routeForm.lat.$error.required">This is a required field</span>
+            <span ng-show="routeForm.lat.$error.required">Click on the map to set the location</span>
             <span ng-show="routeForm.lat.$invalid">Invalid</span>
           </div>
-      </div>
 
-      <div class="form-group lng_field">
-          <label for="id_waypoint_lng" class="control-label col-xs-2">longitude:</label>
-          <div class="col-xs-10">
+          <div class="col-xs-5">
             <input class="form-control"
                    ng-model="route.selected_item.lng"
                    id="id_waypoint_lng"
@@ -65,7 +62,7 @@
                    type="number"
                    required
             />
-            <span ng-show="routeForm.lng.$error.required">This is a required field</span>
+            <span ng-show="routeForm.lng.$error.required">Click on the map to set the location</span>
             <span ng-show="routeForm.lng.$invalid">Invalid</span>
           </div>
       </div>
@@ -86,6 +83,26 @@
             <span ng-show="routeForm.image.$invalid">Must be a URL</span>
           </div>
       </div>
+
+      <div class="form-group audio_file_field">
+          <label for="id_audio_file" class="control-label col-xs-2"> audio file:</label>
+          <div class="col-xs-10">
+            <input class="form-control"
+                   ng-model="route.selected_item.audio_file"
+                   id="id_audio_file"
+                   maxlength="160"
+                   name="audio_file"
+                   type="url"
+            />
+            <span ng-show="routeForm.image.$error.required">This is a required field</span>
+            <span ng-show="routeForm.image.$error.maxlength">Maximum length is 160</span>
+            <span ng-show="routeForm.image.$invalid">Must be a URL</span>
+
+            <a class="btn btn-primary col-xs-4" ng-click='route.audio_player()' role="button">Mp3 Player</a>
+            <div class='audio_player col-xs-8'> <div id="audio"> <a href=''></a> </div> </div>
+          </div>
+      </div>
+
 
       <p><input class="btn btn-primary"
                 type="submit"

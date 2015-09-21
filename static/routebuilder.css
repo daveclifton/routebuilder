@@ -1,5 +1,4 @@
 
-
 .index {
     text-align: center;
 }
@@ -8,23 +7,61 @@
     vertical-align: middle;
     text-align: center;
     overflow:hidden;
+    margin: 20px;
+    max-height: 180px;
 }
 
 .index img {
-    max-height: 200px;
+    height: 160px;
+    overflow:hidden;
 }
 
 .index p {
-    font-size: 15pt;
+    font-size: 12pt;
     font-weight: bold;
 }
 
 
-.left-menu img {
-    float: left;
-    display: inline-block;
+
+.about {
+    text-align: left;
 }
 
+.about > div {
+    vertical-align: middle;
+    padding: 20px;
+    height: 240px;
+}
+
+.about img {
+    max-height: 70%;
+    max-width:  100%;
+}
+
+.about h2 {
+    text-align: center;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.about p {
+    font-size: 12pt;
+}
+
+
+
+.route_summary li input {
+    margin: 10px 20px 10px 20px;
+}
+
+.route_summary li a {
+    font-weight: bold
+}
+
+
+h1 {
+    font-size: 24px;
+}
 
 
 .map-frame{

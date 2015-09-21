@@ -82,6 +82,7 @@ var app = angular.module('routebuilderApp', [
         };
 
 
+
         //////////////////////////////////////////////////////////////////////////
         // Manage the direction lines rendered on the map
         //
@@ -137,6 +138,19 @@ var app = angular.module('routebuilderApp', [
 
         self.save_route = function() {
             RouteService.save_route("/save/my_route");
+        };
+
+
+        ///////////////////////////////////////////////////////////////////
+        // MP3 Player
+        //
+        self.audio_player = function() {
+            href = $('#audio').children('a').attr('href');
+            $.template('audioTemplate', '<audio src="'+self.selected_item.audio_file+'" controls>');
+            if (Modernizr.audio.mp3) {
+                $('#audio').empty();
+                $.tmpl('audioTemplate', {src: href}).appendTo($('#audio'));
+            }
         };
 
     } ] ).
@@ -205,7 +219,6 @@ var app = angular.module('routebuilderApp', [
                   //.then(load_route(url))
                   .then(function(response) { self.details = { waypoints: [] }; });
             },
-
 
         };
     }]).

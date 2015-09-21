@@ -36,7 +36,7 @@
             <span ng-show="routeForm.description.$error.required">This is a required field</span>
             <span ng-show="routeForm.description.$error.maxlength">Maximum length is 500</span>
             <span ng-show="routeForm.description.$invalid">This field is invalid</span>
-            <a class="btn btn-primary" onclick='responsiveVoice.speak("Am I supposed to read out the description?");' role="button">Listen &raquo;</a>
+            <a class="btn btn-primary" onclick='responsiveVoice.speak("This where I read out the description");' role="button">Listen &raquo;</a>
           </div>
       </div>
 
@@ -77,15 +77,9 @@
           </div>
       </div>
 
-      <p><input class="btn btn-primary"
-                type="submit"
-                value="Save"
-                class="in_place_save_button"
-                ng-disabled="routeForm.$invalid"
-                ng-click="route.save_route()"
 
-          /></p>
     </form>
+
   </div>
 
   <div class="col-xs-12 col-md-6 col-lg-4">

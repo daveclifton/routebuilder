@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
 
-    <div class="col-sm-3 col-md-2 sidebar">
+    <div class="col-sm-3 col-md-2 sidebar route_summary">
 
       <ul class="list nav nav-sidebar">
       <li ng-click="route.selected_item=null"
@@ -14,7 +14,12 @@
       </li>
       </ul>
 
-      <ul ng-model="route.details().waypoints" ui-sortable="sortableOptions" class="list nav nav-sidebar">
+      <ul ng-model="route.details().waypoints"
+          ui-sortable="sortableOptions"
+          class="list nav nav-sidebar"
+          class="list nav nav-sidebar"
+          title="Drag to change order"
+      >
         <li ng-repeat="waypoint in route.details().waypoints"
             waypoint_id="{[{ waypoint.id }]}"
             ng-click="route.selected_item=waypoint"
@@ -22,16 +27,30 @@
             class="waypoint">
           <a>
             {[{ waypoint.title }]} <br/>
-            <img ng-src="{[{ waypoint.image }]}"  alt="" width='50%'>
+            <img ng-src="{[{ waypoint.image }]}" alt="" width='50%'>
           </a>
         </li>
-      </ul>
 
-      <div ng-click="route.add_waypoint(waypoint)" class="control">
-        <a>Add waypoint
-          <img src="https://cdn3.iconfinder.com/data/icons/glypho-travel/64/map-pin-marker-plus-256.png" class="img-responsive" alt="" width='30%'>
-        </a>
-      </div>
+        <li>
+          <input class="btn btn-primary"
+                    type="submit"
+                    value="Add Waypoint"
+                    class="in_place_save_button"
+                    ng-click="route.add_waypoint(waypoint)"
+          />
+        </li>
+
+        <li>
+          <input class="btn btn-primary"
+                    type="submit"
+                    value="Save Route"
+                    class="in_place_save_button"
+                    ng-disabled="routeForm.$invalid"
+                    ng-click="route.save_route()"
+          />
+        </li>
+
+      </ul>
 
     </div>
   </div>
