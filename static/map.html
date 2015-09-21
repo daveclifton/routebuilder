@@ -10,11 +10,11 @@
         <marker
           class="ng-map-marker"
           ng-repeat="waypoint in route.details().waypoints"
-          position="{[{waypoint.lat}]}, {[{waypoint.lng}]}"
+          position="{{waypoint.lat}}, {{waypoint.lng}}"
           on-click="click_marker()"
           draggable="true"
           on-dragend="on_dragend(event,waypoint)"
-          title="{[{waypoint.title}]}">
+          title="{{waypoint.title}}">
           <div class="marker" ng-class="{dragging: $dragging}"></div>
         </marker>
       </map>

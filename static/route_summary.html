@@ -8,8 +8,8 @@
            ng-class="{'active': route.selected_item == null}"
            class="route">
         <a>
-          {[{route.details().title}]}<br/>
-          <img ng-src="{[{ route.details().image }]}" alt="" width='80%'>
+          {{route.details().title}}<br/>
+          <img ng-src="{{ route.details().image }}" alt="" width='80%'>
         </a>
       </li>
       </ul>
@@ -21,13 +21,13 @@
           title="Drag to change order"
       >
         <li ng-repeat="waypoint in route.details().waypoints"
-            waypoint_id="{[{ waypoint.id }]}"
+            waypoint_id="{{ waypoint.id }}"
             ng-click="route.selected_item=waypoint"
             ng-class="{'active': route.selected_item == waypoint}"
             class="waypoint">
           <a>
-            {[{ waypoint.title }]} <br/>
-            <img ng-src="{[{ waypoint.image }]}" alt="" width='50%'>
+            {{ waypoint.title }} <br/>
+            <img ng-src="{{ waypoint.image }}" alt="" width='50%'>
           </a>
         </li>
 
