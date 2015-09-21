@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="routebuilderApp">
   <head>
-  <base href="/route">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="South London Software Limited">
 
-    <title>Routebuilder</title>
+    <title>Route Builder</title>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -25,23 +24,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.13.4/sortable.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script> <!-- ?signed_in=true" -->
     <script src="https://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 
     <!-- mp3 player -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+
+    <!-- txt to speech -->
     <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
-    <link  href="/static/favicon.png" rel="icon" type="image/png">
+    <!-- 3rd party, but not on a cdn -->
+    <link  href="/static/dashboard.css" rel="stylesheet">
+    <script src="/static/ng-map.min.js"></script>
+
+    <!-- mine -->
+    <script src="/static/routebuilder.js"></script>
     <link  href="/static/dashboard.css" rel="stylesheet">
     <link  href="/static/routebuilder.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.2.1/angular-google-maps.min.js"></script>
-<!--    <script src="/static/ng-map.min.js"></script> -->
-    <script src="/static/angular_ui_sortable.js"></script>
-    <script src="/static/routebuilder.js"></script>
+    <link  href="/static/favicon.png" rel="icon" type="image/png">
 
   </head>
   <body>
