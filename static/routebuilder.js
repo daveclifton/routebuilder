@@ -12,7 +12,7 @@ routebuilderApp.config(function($routeProvider) {
         controller: 'RouteController as route'
     })
     .when('/', {
-        templateUrl: '/static/index.html',
+        templateUrl: '/static/home.html',
         controller:'RouteController as route',
     })
     .when('/route/:route_name', {

@@ -7,17 +7,17 @@
            center="51.5, -0.14"
            on-click="on_click()">
 
-        <marker
-          class="ng-map-marker"
-          ng-repeat="waypoint in route.details().waypoints"
-          position="{{waypoint.lat}}, {{waypoint.lng}}"
-          on-click="click_marker()"
-          draggable="true"
-          on-dragend="on_dragend(event,waypoint)"
-          title="{{waypoint.title}}">
+        <marker ng-repeat="waypoint in route.details().waypoints"
+                class="ng-map-marker"
+                title="{{waypoint.title}}">
+                position="{{waypoint.lat}}, {{waypoint.lng}}"
+                on-click="click_marker()"
+                draggable="true"
+                on-dragend="on_dragend(event,waypoint)"
           <div class="marker" ng-class="{dragging: $dragging}"></div>
         </marker>
       </map>
+
     </div>
   </div>
 </div>
