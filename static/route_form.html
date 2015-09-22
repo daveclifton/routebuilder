@@ -35,15 +35,19 @@
             ></textarea>
             <span ng-show="routeForm.description.$error.required">This is a required field</span>
             <span ng-show="routeForm.description.$error.maxlength">Maximum length is 500</span>
-            <span ng-show="routeForm.description.$invalid">This field is invalid</span>
-            <a class="btn btn-primary" onclick='responsiveVoice.speak("This where I read out the description");' role="button">Listen &raquo;</a>
+            <a class="btn btn-primary"
+               onclick='responsiveVoice.speak("This where I read out the description");'
+               role="button">
+               Listen &raquo;
+             </a>
           </div>
       </div>
 
       <div class="form-group color_field">
           <label for="id_color" class="control-label col-xs-2">color:</label>
           <div class="col-xs-10">
-            <input class="form-control"
+            <input colorpicker
+                   class="form-control"
                    ng-model="route.details().color"
                    id="id_color"
                    ng-minlength="7"
@@ -54,9 +58,8 @@
                    required
             />
             <span ng-show="routeForm.color.$error.required">This is a required field</span>
-            <span ng-show="routeForm.color.$error.minlength">Must be #XXXXXX</span>
-            <span ng-show="routeForm.color.$error.maxlength">Must be #XXXXXX</span>
-            <span ng-show="routeForm.color.$invalid">Invalid</span>
+            <span ng-show="routeForm.color.$error.minlength">Must be a color #XXXXXX</span>
+            <span ng-show="routeForm.color.$error.maxlength">Must be a color #XXXXXX</span>
           </div>
       </div>
 

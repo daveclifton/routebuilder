@@ -1,3 +1,6 @@
+"use strict";
+
+
 var routebuilderApp = angular.module('routebuilderApp', [ 'ngRoute', 'ngMap', 'ui.sortable'
     , 'auth0', 'angular-storage', 'angular-jwt'
     ]);
@@ -142,7 +145,7 @@ routebuilderApp.controller('RouteController', [
 
     $scope.$on('mapInitialized', function(evt, evtMap) {
         self.map = evtMap;
-        for ( i in render_manager ) {
+        for ( var i in render_manager ) {
             render_manager[i].setMap(self.map);
         }
     });
@@ -166,7 +169,7 @@ routebuilderApp.controller('RouteController', [
         //map.setZoom(8);
     };
 
-    move_waypoint = function(waypoint,lat,lng) {
+    var move_waypoint = function(waypoint,lat,lng) {
         waypoint.lat = lat;
         waypoint.lng = lng;
         draw_directions_for_waypoint(waypoint);
@@ -177,16 +180,16 @@ routebuilderApp.controller('RouteController', [
     // Google Maps rendered lines / directions
     //
 
-    draw_directions_for_waypoint = function(waypoint) {
+    var draw_directions_for_waypoint = function(waypoint) {
         waypoints = self.details().waypoints;
         i = waypoints.indexOf(waypoint);
         DirectionsService.get_directions( waypoints[i-1], waypoint, self.render_directions );
         DirectionsService.get_directions( waypoint, waypoints[i+1], self.render_directions );
     }
 
-    draw_all_directions = function() {
-        waypoints = self.details().waypoints;
-        for ( i in waypoints ) {
+    var draw_all_directions = function() {
+        var waypoints = self.details().waypoints;
+        for ( var i in waypoints ) {
             DirectionsService.get_directions(waypoints[i], waypoints[parseInt(i)+1], self.render_directions);
         }
     }
@@ -194,7 +197,7 @@ routebuilderApp.controller('RouteController', [
     // After drag/drop sorting, redraw all routes
     $scope.sortableOptions = {
         stop: function(e, ui)   {
-            for ( i in render_manager ) {
+            for ( var i in render_manager ) {
                 render_manager[i].setMap(null);
             }
             draw_all_directions()
@@ -223,8 +226,9 @@ routebuilderApp.controller('RouteController', [
         RouteService.load($routeParams.route_name, draw_all_directions);
     }
 
-    self.save_route = function() {
-        RouteService.save_route("/save/my_route");
+    self.save = function() {
+        console.log( self.details().title );
+        RouteService.save( self.details().title );
     };
 
 
@@ -252,6 +256,7 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
     // Default = New route
     self.details = { title: "New Route",
                      image: "http://www.rightmove.co.uk/overseas-magazine/files/2012/11/Pin-on-Map2.jpg",
+                     color: "#FF0000",
                      waypoints: [] };
 
     return {
@@ -295,14 +300,12 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
             );
         },
 
-        save_route: function(url,route) {
-            $http.post(url, self.details )
-            .then(
-                load_route(url)
-            ).then(
-                function(response) {
-                    self.details = { waypoints: [] };
-                }
+        save: function(url,route_name) {
+            $http.post("/save/"+route_name, self.details )
+            .then( function(response) {},
+                   function(errResponse) {
+                       console.error(errResponse.status, ' saving route ', "/save/"+route_name);
+                   }
             );
         },
 

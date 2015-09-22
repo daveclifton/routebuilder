@@ -77,11 +77,12 @@ h1 {
     height: 400px;
 }
 
-form .ng-valid {
+
+input.ng-dirty.ng-valid {
     border-color: green;
 }
 
-form .ng-dirty {
+input.ng-dirty.ng-invalid {
     border-color: red;
 }
 

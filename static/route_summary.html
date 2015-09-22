@@ -18,13 +18,13 @@
           ui-sortable="sortableOptions"
           class="list nav nav-sidebar"
           class="list nav nav-sidebar"
-          title="Drag to change order"
       >
         <li ng-repeat="waypoint in route.details().waypoints"
+            class="waypoint"
             waypoint_id="{{ waypoint.id }}"
             ng-click="route.selected_item=waypoint"
             ng-class="{'active': route.selected_item == waypoint}"
-            class="waypoint">
+            title="Drag to change order">
           <a>
             {{ waypoint.title }} <br/>
             <img ng-src="{{ waypoint.image }}" alt="" width='50%'>
@@ -46,7 +46,7 @@
                     value="Save Route"
                     class="in_place_save_button"
                     ng-disabled="routeForm.$invalid"
-                    ng-click="route.save_route()"
+                    ng-click="route.save()"
           />
         </li>
 

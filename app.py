@@ -12,6 +12,9 @@ from flask.ext.cors import cross_origin
 
 app = Flask(__name__)
 
+# No caching for AngularJS SPA development
+app.config.update(SEND_FILE_MAX_AGE_DEFAULT=0)
+
 current_user = LocalProxy(lambda: _request_ctx_stack.top.current_user)
 
 
