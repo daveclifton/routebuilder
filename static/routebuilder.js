@@ -1,5 +1,79 @@
+var routebuilderApp = angular.module('routebuilderApp', [ 'ngRoute', 'ngMap', 'ui.sortable'
+    , 'auth0', 'angular-storage', 'angular-jwt'
+    ]);
 
-var routebuilderApp = angular.module('routebuilderApp', [ 'ngRoute', 'ngMap', 'ui.sortable' ]);
+/////////////////////////////////////////////////////////////////////////////
+// Authentication, from https://auth0.com
+//
+// Google client ID 134951784568-e86bnelnpbuijo76ccqfje9q6g5gb4u9.apps.googleusercontent.com
+//
+routebuilderApp.config(function (authProvider) {
+        authProvider.init({
+            domain: 'routebuilder.eu.auth0.com',
+            clientID: 'bEqVjIJFSjBygHI5JVZWgGcjAJV30eFK'
+        });
+    });
+
+
+
+routebuilderApp.run(function(auth) {
+        // This hooks al auth events to check everything as soon as the app starts
+          auth.hookEvents();
+    });
+
+routebuilderApp.controller('LoginCtrl', ['$scope', '$http', 'auth', 'store', '$location',
+    function ($scope, $http, auth, store, $location) {
+
+        $scope.auth = auth; // Make auth visible!
+
+        $scope.login = function () {
+            auth.signin({}, function (profile, token) {
+                console.log(profile);
+                store.set('profile', profile);
+                store.set('token', token);
+                console.log("LOGIN CONTROLLERR", auth.profile.nickname);
+                $location.path('/');
+            }, function () {
+                console.error( "ERROR from login controller" );
+                // Error callback
+            });
+        }
+
+        $scope.logout = function() {
+          auth.signout();
+          store.remove('profile');
+          store.remove('token');
+        }
+    }]);
+
+routebuilderApp.run(function($rootScope, auth, store, jwtHelper, $location) {
+      // This events gets triggered on refresh or URL change
+      $rootScope.$on('$locationChangeStart', function() {
+        var token = store.get('token');
+
+        if (token) {
+          if (!jwtHelper.isTokenExpired(token)) {
+            if (!auth.isAuthenticated) {
+              auth.authenticate(store.get('profile'), token);
+            }
+          } else {
+            // Either show the login page or use the refresh token to get a new idToken
+            $location.path('/');
+          }
+        }
+      });
+    });
+
+routebuilderApp.config(function (authProvider, $routeProvider, $httpProvider, jwtInterceptorProvider) {
+
+        jwtInterceptorProvider.tokenGetter = ['store', function(store) {
+            return store.get('token');
+        }];
+
+        $httpProvider.interceptors.push('jwtInterceptor');
+    });
+
+
 
 //////////////////////////////////////////////////////////////////////
 // RoutingController
@@ -39,7 +113,6 @@ routebuilderApp.config(function($routeProvider) {
   });
 
 
-
 //////////////////////////////////////////////////////////////////////
 // RouteController
 //
@@ -50,7 +123,6 @@ routebuilderApp.controller('RouteController', [
 
     self.details       = RouteService.details;
     self.selected_item = null;   // Either the route overview or a waypoint
-
 
     self.selected_form = function() {
         return( (self.selected_item)?"waypoint":"route" );
@@ -63,7 +135,7 @@ routebuilderApp.controller('RouteController', [
 
 
     ////////////////////////////////////////////////////////////////////////
-    // Google Maps controller.
+    // Google Maps controls
     //
 
     var render_manager = {};    // managers all rendered directions
@@ -113,7 +185,6 @@ routebuilderApp.controller('RouteController', [
     }
 
     draw_all_directions = function() {
-        console.log( "draw_all_directions");
         waypoints = self.details().waypoints;
         for ( i in waypoints ) {
             DirectionsService.get_directions(waypoints[i], waypoints[parseInt(i)+1], self.render_directions);
@@ -131,14 +202,11 @@ routebuilderApp.controller('RouteController', [
     };
 
     self.render_directions = function(directions, origin, destination) {
-        console.log( "render_directions");
-
         var line = new google.maps.DirectionsRenderer({
             map: self.map,
             directions: directions,
             polylineOptions: { strokeColor: '#FF0000' }
         });
-        console.log( line);
 
         render_manager["ORIGIN:"+origin.$$hashKey] && render_manager["ORIGIN:"+origin.$$hashKey].setMap(null);
         render_manager["ORIGIN:"+origin.$$hashKey] = line;
@@ -282,10 +350,11 @@ routebuilderApp.factory('DirectionsService', [ function() {
                         render_callback(directions_cache[key],origin,destination);
                     } else {
                         // Only 10 calls per second, watch for OVER_QUERY_LIMIT!
-                        console.log("DirectionsService:",status);
+                        console.error("DirectionsService:",status);
                     }
                 }
             );
         }
     };
 }]);
+
