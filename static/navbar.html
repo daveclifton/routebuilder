@@ -18,9 +18,10 @@
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Routes <span class="caret"></span></a>
 
           <ul class="dropdown-menu" ng-controller="RouteController as route">
-            <li class=""><a href='/#/route/london'>London</a></li>
-            <li class=""><a href='/#/route/bath'>Bath</a></li>
-            <li class=""><a herf='/#/route/my_route'>MY_ROUTE (last saved)</a></li>
+            <li ng-repeat='slug in route.route_list()'>
+              <a href='/#/route/{{slug}}'>{{slug}}</a>
+            </li>
+
             <li role="separator" class="divider"></li>
             <li class="dropdown-header">Nav header</li>
             <li><a href="/#/route">New Route</a></li>

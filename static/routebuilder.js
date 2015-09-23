@@ -34,7 +34,6 @@ routebuilderApp.controller('LoginCtrl', ['$scope', '$http', 'auth', 'store', '$l
                 console.log(profile);
                 store.set('profile', profile);
                 store.set('token', token);
-                console.log("LOGIN CONTROLLERR", auth.profile.nickname);
                 $location.path('/');
             }, function () {
                 console.error( "ERROR from login controller" );
@@ -43,9 +42,9 @@ routebuilderApp.controller('LoginCtrl', ['$scope', '$http', 'auth', 'store', '$l
         }
 
         $scope.logout = function() {
-          auth.signout();
-          store.remove('profile');
-          store.remove('token');
+            auth.signout();
+            store.remove('profile');
+            store.remove('token');
         }
     }]);
 
@@ -127,14 +126,17 @@ routebuilderApp.controller('RouteController', [
     self.details       = RouteService.details;
     self.selected_item = null;   // Either the route overview or a waypoint
 
+
     self.selected_form = function() {
         return( (self.selected_item)?"waypoint":"route" );
-    }
+    };
 
     self.add_waypoint = function() {
         self.selected_item = RouteService.add_waypoint();
         return( self.selected_item );
-    }
+    };
+
+    self.route_list = function() { return( RouteService.route_list()) };
 
 
     ////////////////////////////////////////////////////////////////////////
@@ -227,8 +229,15 @@ routebuilderApp.controller('RouteController', [
     }
 
     self.save = function() {
-        console.log( self.details().title );
-        RouteService.save( self.details().title );
+        var slug = self.details().title
+                .toLowerCase()
+                .replace(/[^\w ]+/g, '')    // del non-word chars
+                .replace(/\s/g, '-')        // spaces to -
+                .replace(/\-\-+/g, '-')     // multiple -'s
+                .replace(/^-+/, '')         // trim start
+                .replace(/-+$/, '');        // trim end
+
+        RouteService.save( slug );
     };
 
 
@@ -236,7 +245,7 @@ routebuilderApp.controller('RouteController', [
     // MP3 Player
     //
     self.audio_player = function() {
-        href = $('#audio').children('a').attr('href');
+        var href = $('#audio').children('audio').attr('src');
         $.template('audioTemplate', '<audio src="'+self.selected_item.audio_file+'" controls>');
         if (Modernizr.audio.mp3) {
             $('#audio').empty();
@@ -259,6 +268,21 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
                      color: "#FF0000",
                      waypoints: [] };
 
+    ////////////////////////////////
+
+    self.route_list = ['sss'];
+
+    $http.get("/routes")
+    .then(
+        function(response) {
+            self.route_list = angular.fromJson( response.data );
+        },
+        function(errResponse) {
+            console.error(errResponse.status, ' fetching routes');
+        }
+    );
+    ////////////////////////////////
+
     return {
         details: function() {
             return self.details
@@ -269,7 +293,7 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
         },
 
         add_waypoint: function() {
-            new_waypoint = {
+            var new_waypoint = {
                 title: "New Waypoint",
                 image: "http://thistimeimeanit.com/wp-content/uploads/2013/04/road-sign-with-question-mark.jpg"
             }
@@ -281,30 +305,32 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
         ///////////////////////////////////////////////////////////////////
         //  Botched way of loading the data
         //
-        load: function(route_name, callback) {
+        route_list: function() { return(self.route_list) },
 
-            if ( ! route_name ) {
+
+        load: function(slug, callback) {
+
+            if ( ! slug ) {
                 return;
             };
 
-            $http.jsonp("/load/"+route_name)
+            $http.get("/load/"+slug)
             .then(
                 function(response) {
-                    console.log("SUCCESS", ' fetching route ', "/load/"+route_name);
-                    self.details = response.data;
+                    self.details = angular.fromJson( response.data );;
                     callback()
                 },
                 function(errResponse) {
-                    console.error(errResponse.status, ' fetching route ', "/load/"+route_name);
+                    console.error(errResponse.status, ' fetching route ', "/load/"+slug);
                 }
             );
         },
 
-        save: function(url,route_name) {
-            $http.post("/save/"+route_name, self.details )
+        save: function(slug) {
+            $http.post("/save/"+slug, self.details )
             .then( function(response) {},
                    function(errResponse) {
-                       console.error(errResponse.status, ' saving route ', "/save/"+route_name);
+                       console.error(errResponse.status, ' saving route ', "/save/"+slug);
                    }
             );
         },

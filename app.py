@@ -4,8 +4,9 @@ import os
 import jwt
 import base64
 import sys
+import json
 from functools import wraps
-from flask import Flask, request, jsonify, _request_ctx_stack, send_from_directory
+from flask import Flask, request, Response, jsonify, _request_ctx_stack, send_from_directory
 from werkzeug.local import LocalProxy
 from flask.ext.cors import cross_origin
 
@@ -91,6 +92,21 @@ def index():
     return send_from_directory('static', 'index.html')
 
 
+@app.route("/routes", methods=['GET'])
+@cross_origin(headers=['Content-Type', 'Authorization'])
+############# DISABLED FOR NOW!!
+#@requires_auth
+def routes():
+    try:
+     path = os.path.join(os.path.dirname(__file__), 'routes')
+     slugs = [ f[:-6] for f in os.listdir(path) if f.endswith(".route") and not ' ' in f ]
+     json_text = json.dumps(slugs)
+    except Exception, e:
+     import sys
+     sys.stderr.write(e)
+    return Response(response=json_text, status=200, mimetype="application/javascript")
+
+
 @app.route("/load/<route_name>", methods=['GET'])
 @cross_origin(headers=['Content-Type', 'Authorization'])
 ############# DISABLED FOR NOW!!
@@ -103,7 +119,7 @@ def load(route_name):
 def save(route_name):
     file_path = os.path.join(os.path.dirname(__file__), 'routes', route_name+".route")
     with open( file_path, 'w' ) as f:
-        f.write( "angular.callbacks._0( route =" + request.data + ")" )
+        f.write( request.data )
     return Response(response=request.data, status=200, mimetype="application/javascript")
 
 
