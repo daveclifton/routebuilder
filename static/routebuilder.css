@@ -86,3 +86,8 @@ input.ng-dirty.ng-invalid {
     border-color: red;
 }
 
+
+@media (max-width: 768px)
+.sidebar {
+   display: block;
+}
