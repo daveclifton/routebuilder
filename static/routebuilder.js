@@ -95,10 +95,6 @@ routebuilderApp.controller('RouteController', [
     self.details       = RouteService.details;
     self.selected_item = null;   // Either the route overview or a waypoint
 
-    self.selected_form = function() {
-        return( (self.selected_item)?"waypoint":"route" );
-    };
-
     self.add_waypoint = function() {
         self.selected_item = RouteService.add_waypoint();
         return( self.selected_item );

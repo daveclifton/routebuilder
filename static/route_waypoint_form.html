@@ -1,4 +1,4 @@
-<h1 class="page-header">{{ route.details().title }} &gt; {{ route.selected_item.title }}</h1  >
+<h1 class="page-header">{{ route.details().title }} &gt; {{ waypoint.title }}</h1  >
 <div class="row">
   <div class="col-xs-12 col-md-6 col-lg-4">
 
@@ -11,7 +11,7 @@
                    id="id_waypoint_title"
                    name="title"
                    type="text"
-                   ng-model="route.selected_item.title"
+                   ng-model="waypoint.title"
                    ng-maxlength="40"
                    required
             />
@@ -28,7 +28,7 @@
                       name="description"
                       cols="40"
                       rows="8"
-                      ng-model="route.selected_item.description"
+                      ng-model="waypoint.description"
                       ng-maxlength="500"
                       required
             ></textarea>
@@ -44,7 +44,7 @@
           <label for="id_waypoint_lat_lng" class="control-label col-xs-2"> Lat/Lng:</label>
           <div class="col-xs-10">
             <div class="form-control">
-              {{ route.selected_item.lat | number:4 }}, {{ route.selected_item.lng | number:4 }}
+              {{ waypoint.lat | number:4 }}, {{ waypoint.lng | number:4 }}
             </div>
           </div>
           <span ng-show="waypointForm.lng.$error.required">Click on the map to set the location</span>
@@ -58,7 +58,7 @@
                    id="id_image"
                    name="image"
                    type="url"
-                   ng-model="route.selected_item.image"
+                   ng-model="waypoint.image"
                    ng-maxlength="160"
                    required
             />
@@ -75,7 +75,7 @@
                    id="id_audio_file"
                    name="audio_file"
                    type="url"
-                   ng-model="route.selected_item.audio_file"
+                   ng-model="waypoint.audio_file"
                    ng-maxlength="160"
             />
             <span ng-show="waypointForm.audio_file.$error.required">This is a required field</span>
@@ -96,6 +96,6 @@
   </div>
 
   <div class="col-xs-12 col-md-6 col-lg-4">
-    <img ng-src="{{ route.selected_item.image }}" class="img-responsive" alt="Waypoint Image">
+    <img ng-src="{{ waypoint.image }}" class="img-responsive" alt="Waypoint Image">
   </div>
 </div>
