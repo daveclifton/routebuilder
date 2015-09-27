@@ -1,15 +1,15 @@
 
 set PATH=%PATH%;C:\Python27\;C:\Python27\Scripts;C:\Python27\Tools
-set PATH=%PATH%;"C:\Users\Dave\Google Drive\Projects\Python\routebuilder"
+set PATH=%PATH%;"C:\Users\Dave\Google Drive\audioguide\routebuilder"
 set PYTHONPATH=C:\Python27;C:\Python27\Lib;C:\Python27\DLLs
-
-cd "C:\Users\Dave\Google Drive\Projects\Python\routebuilder"
+cd "C:\Users\Dave\Google Drive\audioguide\routebuilder"
 venv\Scripts\Activate
-python app.py
-
 
 heroku login
 heroku local    # http://localhost:5000
+
+python app.py
+
 
 
 # Heroku

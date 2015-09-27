@@ -1,9 +1,7 @@
 "use strict";
 
 
-var routebuilderApp = angular.module('routebuilderApp', [ 'ngRoute', 'ngMap', 'ui.sortable'
-    , 'auth0', 'angular-storage', 'angular-jwt'
-    ]);
+var routebuilderApp = angular.module('routebuilderApp',['ngRoute','ngMap','ui.sortable','auth0','angular-storage','angular-jwt']);
 
 /////////////////////////////////////////////////////////////////////////////
 // Authentication, from https://auth0.com
@@ -76,56 +74,28 @@ routebuilderApp.config(function (authProvider, $routeProvider, $httpProvider, jw
     });
 
 
-
 //////////////////////////////////////////////////////////////////////
 // RoutingController
 //
 routebuilderApp.config(function($routeProvider) {
-
     $routeProvider
-    .when('/about', {
-        templateUrl: '/static/about.html',
-        controller: 'RouteController as route'
-    })
-    .when('/', {
-        templateUrl: '/static/home.html',
-        controller:'RouteController as route',
-    })
-    .when('/route/:route_name', {
-        templateUrl: '/static/route.html',
-        controller:'RouteController as route',
-
-        //resolve: {
-        //    auth: ['$q', '$location', 'UserService',
-        //        function($q, $location, UserService) {
-        //           return UserService.session().then(
-        //               function(success) {},
-        //               function(err) {
-        //                  $location.path('/login');
-        //                  $location.replace();
-        //                  return $q.reject(err);
-        //           });
-        //        }]
-        //     }
-        //
-        })
-    .otherwise({
-        redirectTo: '/'
-    });
-  });
+        .when('/',                  { templateUrl: '/static/home.html',  controller:'RouteController as route', })
+        .when('/about',             { templateUrl: '/static/about.html', controller:'RouteController as route' })
+        .when('/route/:route_name', { templateUrl: '/static/route.html', controller:'RouteController as route' })
+        .otherwise({ redirectTo: '/' });
+});
 
 
 //////////////////////////////////////////////////////////////////////
 // RouteController
 //
 routebuilderApp.controller('RouteController', [
-                '$scope', '$http', '$routeParams', 'RouteService', 'DirectionsService', '$location',
-                function($scope, $http, $routeParams, RouteService, DirectionsService, $location) {
+        '$scope', '$http', '$routeParams', 'RouteService', 'DirectionsService', '$location',
+        function($scope, $http, $routeParams, RouteService, DirectionsService, $location) {
     var self = this;
 
     self.details       = RouteService.details;
     self.selected_item = null;   // Either the route overview or a waypoint
-
 
     self.selected_form = function() {
         return( (self.selected_item)?"waypoint":"route" );
@@ -138,11 +108,9 @@ routebuilderApp.controller('RouteController', [
 
     self.route_list = function() { return( RouteService.route_list()) };
 
-
     ////////////////////////////////////////////////////////////////////////
     // Google Maps controls
     //
-
     var render_manager = {};    // managers all rendered directions
 
     $scope.$on('mapInitialized', function(evt, evtMap) {
@@ -161,8 +129,6 @@ routebuilderApp.controller('RouteController', [
             waypoint = self.add_waypoint();
         }
         move_waypoint( self.selected_item, event.latLng.lat(), event.latLng.lng() );
-        //map.setZoom(8);
-        //map.setCenter(marker.getPosition());
     };
 
     $scope.click_marker = function(event) {
@@ -177,11 +143,9 @@ routebuilderApp.controller('RouteController', [
         draw_directions_for_waypoint(waypoint);
     };
 
-
     //////////////////////////////////////////////////////////////////////////
     // Google Maps rendered lines / directions
     //
-
     var draw_directions_for_waypoint = function(waypoint) {
         waypoints = self.details().waypoints;
         i = waypoints.indexOf(waypoint);
@@ -220,7 +184,6 @@ routebuilderApp.controller('RouteController', [
         render_manager["DESTINATION:"+destination.$$hashKey] = line;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     // Load / Save functions. Not right here!
     //
@@ -252,8 +215,7 @@ routebuilderApp.controller('RouteController', [
             $.tmpl('audioTemplate', {src: href}).appendTo($('#audio'));
         }
     };
-
-} ] );
+}]);
 
 
 //////////////////////////////////////////////////////////////////////
@@ -270,7 +232,7 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
 
     ////////////////////////////////
 
-    self.route_list = ['sss'];
+    self.route_list = [];
 
     $http.get("/routes")
     .then(
@@ -301,7 +263,6 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
             return( new_waypoint );
         },
 
-
         ///////////////////////////////////////////////////////////////////
         //  Botched way of loading the data
         //
@@ -328,26 +289,22 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
 
         save: function(slug) {
             $http.post("/save/"+slug, self.details )
-            .then( function(response) {},
+            .then( function(response) {
+                        /// NEED SOMETHING HERE
+                   },
                    function(errResponse) {
                        console.error(errResponse.status, ' saving route ', "/save/"+slug);
-                   }
-            );
-        },
-
+        })},
     };
 }]);
 
 
 //////////////////////////////////////////////////////////////////////
-// Google DirectionsService
+// google.maps.directionService Service (with caching)
 //
 routebuilderApp.factory('DirectionsService', [ function() {
-    var self = this;
 
-    ///////////////////////////////////////////////////////////////////////
-    // Fetch/cache directions from the google.maps.directionService
-    //
+    var self = this;
     var directionsService = new google.maps.DirectionsService;
     var directions_cache = {};
 
@@ -386,4 +343,3 @@ routebuilderApp.factory('DirectionsService', [ function() {
         }
     };
 }]);
-
