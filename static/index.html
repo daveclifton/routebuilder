@@ -48,20 +48,17 @@
     <script type="text/javascript" src="//cdn.auth0.com/w2/auth0-angular-4.js"> </script>
 
     <!-- 3rd party, but not on a cdn -->
-    <link href="/static/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet "href="/static/dashboard.css">
     <script type="text/javascript" src="/static/ng-map.min.js"></script>
 
     <!-- mine -->
     <script type="text/javascript" src="/static/routebuilder.js"></script>
-    <link href="/static/dashboard.css" rel="stylesheet">
     <link href="/static/routebuilder.css" rel="stylesheet">
     <link href="/static/favicon.png" rel="icon" type="image/png">
-
-
   </head>
+
   <body>
     <div ng-include src="'/static/navbar.html'"></div>
-
     <div ng-view></div>
   </body>
 </html>
