@@ -3,6 +3,18 @@
 
 var routebuilderApp = angular.module('routebuilderApp',['ngRoute','ngMap','ui.sortable','auth0','angular-storage','angular-jwt']);
 
+//////////////////////////////////////////////////////////////////////
+// RoutingController
+//
+routebuilderApp.config(function($routeProvider) {
+    $routeProvider
+        .when('/',                  { templateUrl: '/static/home.html',  controller:'RouteController as route', })
+        .when('/about',             { templateUrl: '/static/about.html', controller:'RouteController as route' })
+        .when('/route/:route_name', { templateUrl: '/static/route.html', controller:'RouteController as route' })
+        .otherwise({ redirectTo: '/' });
+});
+
+
 /////////////////////////////////////////////////////////////////////////////
 // Authentication, from https://auth0.com
 //
@@ -14,8 +26,6 @@ routebuilderApp.config(function (authProvider) {
             clientID: 'bEqVjIJFSjBygHI5JVZWgGcjAJV30eFK'
         });
     });
-
-
 
 routebuilderApp.run(function(auth) {
         // This hooks al auth events to check everything as soon as the app starts
@@ -72,18 +82,6 @@ routebuilderApp.config(function (authProvider, $routeProvider, $httpProvider, jw
 
         $httpProvider.interceptors.push('jwtInterceptor');
     });
-
-
-//////////////////////////////////////////////////////////////////////
-// RoutingController
-//
-routebuilderApp.config(function($routeProvider) {
-    $routeProvider
-        .when('/',                  { templateUrl: '/static/home.html',  controller:'RouteController as route', })
-        .when('/about',             { templateUrl: '/static/about.html', controller:'RouteController as route' })
-        .when('/route/:route_name', { templateUrl: '/static/route.html', controller:'RouteController as route' })
-        .otherwise({ redirectTo: '/' });
-});
 
 
 //////////////////////////////////////////////////////////////////////
