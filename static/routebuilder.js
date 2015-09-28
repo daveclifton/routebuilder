@@ -280,33 +280,28 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
         ///////////////////////////////////////////////////////////////////
         //  Botched way of loading the data
         //
-        route_list: function() { return(self.route_list) },
-
+        route_list: function() {
+            return(self.route_list)
+        },
 
         load: function(slug, callback) {
-
             if ( ! slug ) {
                 return;
             };
 
-            $http.get("/load/"+slug)
-            .then(
+            $http.get("/load/"+slug).then(
                 function(response) {
                     self.details = angular.fromJson( response.data );
                     callback()
-                },
-                function(errResponse) {
+                }, function(errResponse) {
                     console.error(errResponse.status, ' fetching route ', "/load/"+slug);
-                }
-            );
-        },
+        })},
 
         save: function(slug) {
-            $http.post("/save/"+slug, self.details )
-            .then( function(response) {
+            $http.post("/save/"+slug, self.details ).then(
+                    function(response) {
                         /// NEED SOMETHING HERE
-                   },
-                   function(errResponse) {
+                   }, function(errResponse) {
                        console.error(errResponse.status, ' saving route ', "/save/"+slug);
         })},
     };
@@ -322,38 +317,43 @@ routebuilderApp.factory('DirectionsService', [ function() {
     var directionsService = new google.maps.DirectionsService;
     var directions_cache = {};
 
-    return {
-        get_directions: function(origin, destination, render_callback) {
+    function get_directions(origin, destination, render_callback) {
 
-            if ( ! origin || ! destination ) {
-                return;
-            }
-
-            var key = origin.lat+","+origin.lng+","+destination.lat+","+destination.lng+",";
-
-            if ( directions_cache[key] ) {
-                render_callback(directions_cache[key],origin,destination);
-                return;
-            }
-
-            directionsService.route( {
-                  origin:      new google.maps.LatLng(origin.lat,     origin.lng),
-                  destination: new google.maps.LatLng(destination.lat,destination.lng),
-                  travelMode:  google.maps.TravelMode.WALKING
-                  //travelMode:  google.maps.TravelMode.TRANSIT,
-                  //transitOptions:  { modes: [ google.maps.TransitMode.BUS ] }
-                },
-
-                function(response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        directions_cache[key] = response;
-                        render_callback(directions_cache[key],origin,destination);
-                    } else {
-                        // Only 10 calls per second, watch for OVER_QUERY_LIMIT!
-                        console.error("DirectionsService:",status);
-                    }
-                }
-            );
+        if ( ! origin || ! destination ) {
+            return;
         }
+
+        var key = origin.lat+","+origin.lng+","+destination.lat+","+destination.lng+",";
+
+        if ( directions_cache[key] ) {
+            render_callback(directions_cache[key],origin,destination);
+            return;
+        }
+
+        directionsService.route( {
+              origin:      new google.maps.LatLng(origin.lat,     origin.lng),
+              destination: new google.maps.LatLng(destination.lat,destination.lng),
+              travelMode:  google.maps.TravelMode.WALKING
+              //travelMode:  google.maps.TravelMode.TRANSIT,
+              //transitOptions:  { modes: [ google.maps.TransitMode.BUS ] }
+            },
+
+            function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    console.error("DirectionsService:","OK");
+                    directions_cache[key] = response;
+                    render_callback(directions_cache[key],origin,destination);
+                } else if ( status = 'OVER_QUERY_LIMIT' ) {
+                    // Only 10 calls per second, wait, then retry.
+                    setTimeout(function() {get_directions(origin, destination, render_callback) }, 1500 )
+                } else {
+                    console.error("DirectionsService:",status);
+                }
+            }
+        );
+    };
+
+    return {
+        get_directions: get_directions
     };
 }]);
