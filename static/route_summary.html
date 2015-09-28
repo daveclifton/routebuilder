@@ -34,7 +34,7 @@
           <input class="btn btn-primary"
                     type="submit"
                     value="Add Waypoint"
-                    class="in_place_save_button"
+                    ng-disabled="routeForm.$invalid"
                     ng-click="route.add_waypoint(waypoint)"
           />
         </li>
@@ -43,7 +43,6 @@
           <input class="btn btn-primary"
                     type="submit"
                     value="Save Route"
-                    class="in_place_save_button"
                     ng-disabled="routeForm.$invalid"
                     ng-click="route.save()"
           />

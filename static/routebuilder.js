@@ -10,6 +10,7 @@ routebuilderApp.config(function($routeProvider) {
     $routeProvider
         .when('/',                  { templateUrl: '/static/home.html',  controller:'RouteController as route', })
         .when('/about',             { templateUrl: '/static/about.html', controller:'RouteController as route' })
+        .when('/route',             { templateUrl: '/static/route.html', controller:'RouteController as route' })
         .when('/route/:route_name', { templateUrl: '/static/route.html', controller:'RouteController as route' })
         .otherwise({ redirectTo: '/' });
 });
