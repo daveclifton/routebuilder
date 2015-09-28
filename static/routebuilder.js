@@ -116,12 +116,6 @@ routebuilderApp.controller('RouteController', [
         return( item == selected )
     };
 
-    $scope.$watch('routeForm.$invalid', function(new_val,old_val) {
-        if ( selected ) {
-            selected.invalid = new_val
-        }
-    });
-
 
     ////////////////////////////////////////////////////////////////////////
     // Google Maps controls
@@ -162,8 +156,8 @@ routebuilderApp.controller('RouteController', [
     // Google Maps rendered lines / directions
     //
     var draw_directions_for_waypoint = function(waypoint) {
-        waypoints = self.details().waypoints;
-        i = waypoints.indexOf(waypoint);
+        var waypoints = self.details().waypoints;
+        var i = waypoints.indexOf(waypoint);
         DirectionsService.get_directions( waypoints[i-1], waypoint, self.render_directions );
         DirectionsService.get_directions( waypoint, waypoints[i+1], self.render_directions );
     }
