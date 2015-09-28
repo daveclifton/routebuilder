@@ -2,10 +2,9 @@
   <div class="row">
 
     <div class="col-sm-4 col-md-3 col-lg-2 sidebar route_summary">
-
       <ul class="list nav nav-sidebar">
-      <li ng-click="route.selected_item=null"
-           ng-class="{'active': route.selected_item == null}"
+      <li ng-click="route.select(null)"
+           ng-class="{'active': route.is_selected(null)}"
            class="route">
         <a>
           {{route.details().title}}<br/>
@@ -22,8 +21,8 @@
         <li ng-repeat="waypoint in route.details().waypoints"
             class="waypoint"
             waypoint_id="{{ waypoint.id }}"
-            ng-click="route.selected_item=waypoint"
-            ng-class="{'active': route.selected_item == waypoint}"
+            ng-click="route.select(waypoint)"
+            ng-class="{'active': route.is_selected(waypoint)}"
             title="Drag to change order">
           <a>
             {{ waypoint.title }} <br/>
@@ -51,7 +50,6 @@
         </li>
 
       </ul>
-
     </div>
   </div>
 </div>

@@ -90,17 +90,37 @@ routebuilderApp.config(function (authProvider, $routeProvider, $httpProvider, jw
 routebuilderApp.controller('RouteController', [
         '$scope', '$http', '$routeParams', 'RouteService', 'DirectionsService', '$location',
         function($scope, $http, $routeParams, RouteService, DirectionsService, $location) {
-    var self = this;
 
-    self.details       = RouteService.details;
-    self.selected_item = null;   // Either the route overview or a waypoint
+    var self = this;
+    var selected = null;   // Either the null (route overview) or a waypoint
+
+    self.details = RouteService.details;
 
     self.add_waypoint = function() {
-        self.selected_item = RouteService.add_waypoint();
-        return( self.selected_item );
+        self.select( RouteService.add_waypoint() );
+        return( selected );
     };
 
-    self.route_list = function() { return( RouteService.route_list()) };
+    self.route_list = function() {
+        return( RouteService.route_list())
+    };
+
+    self.select = function(item) {
+        if ( $scope.routeForm.$valid == true ) {
+            selected = item;
+        }
+    };
+
+    self.is_selected = function(item) {
+        return( item == selected )
+    };
+
+    $scope.$watch('routeForm.$invalid', function(new_val,old_val) {
+        if ( selected ) {
+            selected.invalid = new_val
+        }
+    });
+
 
     ////////////////////////////////////////////////////////////////////////
     // Google Maps controls
@@ -119,10 +139,10 @@ routebuilderApp.controller('RouteController', [
     };
 
     $scope.on_click = function(event) {
-        if ( ! self.selected_item ) {
+        if ( self.is_selected(null) ) {
             waypoint = self.add_waypoint();
         }
-        move_waypoint( self.selected_item, event.latLng.lat(), event.latLng.lng() );
+        move_waypoint( selected, event.latLng.lat(), event.latLng.lng() );
     };
 
     $scope.click_marker = function(event) {
@@ -203,7 +223,7 @@ routebuilderApp.controller('RouteController', [
     //
     self.audio_player = function() {
         var href = $('#audio').children('audio').attr('src');
-        $.template('audioTemplate', '<audio src="'+self.selected_item.audio_file+'" controls>');
+        $.template('audioTemplate', '<audio src="'+selected.audio_file+'" controls>');
         if (Modernizr.audio.mp3) {
             $('#audio').empty();
             $.tmpl('audioTemplate', {src: href}).appendTo($('#audio'));
@@ -272,7 +292,7 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
             $http.get("/load/"+slug)
             .then(
                 function(response) {
-                    self.details = angular.fromJson( response.data );;
+                    self.details = angular.fromJson( response.data );
                     callback()
                 },
                 function(errResponse) {
