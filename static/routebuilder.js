@@ -266,7 +266,7 @@ routebuilderApp.factory('RouteService', ['$http', function($http) {
         add_waypoint: function() {
             var new_waypoint = {
                 title: "New Waypoint",
-                image: "http://thistimeimeanit.com/wp-content/uploads/2013/04/road-sign-with-question-mark.jpg"
+                image: "static/guideman.jpg"
             }
             self.details.waypoints.push( new_waypoint );
             return( new_waypoint );

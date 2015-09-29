@@ -38,6 +38,10 @@
     max-width:  100%;
 }
 
+.about img.guideman {
+    max-height: 100%;
+}
+
 .about h2 {
     font-size: 14pt;
     font-weight: bold;
