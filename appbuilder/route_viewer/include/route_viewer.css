@@ -1,0 +1,57 @@
+
+
+.index_page,
+.waypoint_page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 2px solid red;
+}
+
+.waypoint_page {
+    zindex: 10;
+}
+
+
+div.profile-background {
+    position: relative;
+    margin: -1em -1em 0em -1em;
+    overflow: hidden;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.05);
+    height: 100px;
+}
+
+img.profile-background {
+    position: absolute;
+    width: 100%;
+}
+
+div.profile-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 50px;
+    margin-left: 1em;
+    line-height: 1.2em;
+    display: block;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0px 0px 1px rgba(0,0,0,0.2);
+    font-size: 16px;
+    color: #fff;
+    width: 100%;
+    zindex: +1;
+}
+
+div.profile-text span {
+    font-size: 12px;
+}
+
+.main_image {
+    overflow: hidden;
+}
+.main_image img {
+    width: 100%
+}
